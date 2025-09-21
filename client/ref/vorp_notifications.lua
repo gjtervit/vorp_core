@@ -1,6 +1,5 @@
 ---VorpNotifications can be used to display notifications on the screen. You can reference this file in your resource manifest to ensure the VorpNotifications API resource is started before your own resource.
 ---VorpNotifications is a singleton class that should be accessed using the global variable VorpNotifications.
----You can reference this in your fxmanifest.lua using the following code: client_script '@vorp-core/client/ref/vorp_notifications.lua'
 
 ---@class VorpNotifications
 ---@field public NotifyLeft fun(title: string, subtitle: string, dict: string, icon: string, duration?: number, color?: string): nil
@@ -357,3 +356,4 @@ function VorpNotification:Test()
   print("^2Displaying: NotifyLeftRank")
   Wait(testWaitDuration)
 end
+
