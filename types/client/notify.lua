@@ -96,3 +96,15 @@ function exports.vorp_core:warningNotify(title, msg, _audioRef, _audioName, dura
 ---@param duration number duration
 ---@param color string color
 function exports.vorp_core:LeftRank(title, subTitle, dict, icon, duration, color) end
+
+--- CLIENT SIDE NOTIFICATION
+---@param title string title
+---@param subtitle string subtitle
+---@param secondary_subtitle string secondary_subtitle
+---@param duration number duration
+function exports.vorp_core:ThreeSimpleTop(title, subtitle, secondary_subtitle, duration) end
+
+--- CLIENT SIDE NOTIFICATION
+---@param title string title
+---@param duration number duration
+function exports.vorp_core:OneSimpleTop(title, duration) end

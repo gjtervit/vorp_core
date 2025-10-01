@@ -112,7 +112,7 @@ function VorpNotification:NotifyObjective(message, duration)
   Citizen.InvokeNative(0xCEDBF17EFCC0E4A4, structConfig:Buffer(), structData:Buffer(), 1)
 end
 
----NotifySimpleTop
+---NotifyTwoSimpleTop
 ---@param title string
 ---@param subtitle string
 ---@param duration? number -- default 3000
@@ -125,6 +125,36 @@ function VorpNotification:NotifySimpleTop(title, subtitle, duration)
   structData:SetInt64(8 * 2, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", subtitle)))
 
   Citizen.InvokeNative(0xA6F4216AB10EB08E, structConfig:Buffer(), structData:Buffer(), 1, 1)
+end
+
+---NotifyThreeSimpleTop
+---@param title string
+---@param subtitle string
+---@param secondary_subtitle string
+---@param duration? number -- default 3000
+function VorpNotification:NotifyThreeSimpleTop(title, subtitle, secondary_subtitle, duration)
+  local structConfig = DataView.ArrayBuffer(8 * 7)
+  structConfig:SetInt32(8 * 0, tonumber(duration or 3000))
+
+  local structData = DataView.ArrayBuffer(8 * 7)
+  structData:SetInt64(8 * 1, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", title)))
+  structData:SetInt64(8 * 2, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", subtitle)))
+  structData:SetInt64(8 * 3, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", secondary_subtitle)))
+
+  Citizen.InvokeNative(0x02BCC0FE9EBA3529, structConfig:Buffer(), structData:Buffer(), true, true, true)
+end
+
+---NotifyOneSimpleTop
+---@param title string
+---@param duration? number -- default 3000
+function VorpNotification:NotifyOneSimpleTop(title, duration)
+  local structConfig = DataView.ArrayBuffer(8 * 7)
+  structConfig:SetInt32(8 * 0, tonumber(duration or 3000))
+
+  local structData = DataView.ArrayBuffer(8 * 7)
+  structData:SetInt64(8 * 1, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", title)))
+
+  Citizen.InvokeNative(0x860DDFE97CC94DF0, structConfig:Buffer(), structData:Buffer(), true)
 end
 
 ---NotifyAvanced
@@ -147,6 +177,7 @@ function VorpNotification:NotifyAvanced(text, dict, icon, text_color, duration, 
   structData:SetInt64(8 * 1, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", text)))
   structData:SetInt64(8 * 2, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", dict)))
   structData:SetInt64(8 * 3, CoreAction.Utils.bigInt(joaat(icon)))
+  --structData:SetInt64(8 * 4, 100) --bounce amount dont seem to work it would be for money
   structData:SetInt64(8 * 5, CoreAction.Utils.bigInt(joaat(text_color or "COLOR_WHITE")))
   if showquality then
     structData:SetInt32(8 * 6, quality or 1)
@@ -356,4 +387,3 @@ function VorpNotification:Test()
   print("^2Displaying: NotifyLeftRank")
   Wait(testWaitDuration)
 end
-

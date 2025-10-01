@@ -1,4 +1,3 @@
-
 ---@class CORE_CLIENT
 ---@field public instancePlayers fun(set:boolean)
 ------------------------------- should not use these, use the lib instead --------------------------------------------------------------
@@ -98,6 +97,13 @@ CoreFunctions.NotifyLeftRank = function(title, subtitle, dict, icon, duration, c
     VorpNotification:NotifyLeftRank(tostring(title), tostring(subtitle), tostring(dict), tostring(icon), tonumber(duration), tostring(color or "COLOR_WHITE"))
 end
 
+CoreFunctions.NotifyThreeSimpleTop = function(title, subtitle, secondary_subtitle, duration)
+    VorpNotification:NotifyThreeSimpleTop(tostring(title), tostring(subtitle), tostring(secondary_subtitle), tonumber(duration))
+end
+
+CoreFunctions.NotifyOneSimpleTop = function(title, duration)
+    VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
+end
 
 CoreFunctions.Graphics = {
     ---@return {width:number, height:number}
@@ -139,4 +145,3 @@ end)
 AddEventHandler('getCore', function(cb)
     return cb(CoreFunctions)
 end)
-

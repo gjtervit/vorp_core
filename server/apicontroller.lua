@@ -18,6 +18,8 @@
 ---@field public NotifyBasicTop fun(source:number, title:string, duration:number)
 ---@field public NotifyWarning fun(source:number, title:string, msg:string, audioRef:string, audioName:string, duration:number)
 ---@field public NotifyLeftRank fun(source:number, title:string, subtitle:string, dict:string, icon:string, duration:number, color:string)
+---@field public NotifyThreeSimpleTop fun(source:number, title:string, subtitle:string, secondary_subtitle:string, duration:number)
+---@field public NotifyOneSimpleTop fun(source:number, title:string, duration:number)
 ---@field public dbUpdateAddTables fun(tbl:table)
 ---@field public dbUpdateAddUpdates fun(updt:table)
 ---@field public AddWebhook fun(title:string, webhook:string, description:string, color:string, name:string, logo:string?, footerlogo:string?, avatar:string?)
@@ -114,8 +116,17 @@ end
 CoreFunctions.NotifyWarning = function(source, title, msg, audioRef, audioName, duration)
     TriggerClientEvent('vorp:warningNotify', source, title, msg, audioRef, audioName, duration)
 end
+
 CoreFunctions.NotifyLeftRank = function(source, title, subtitle, dict, icon, duration, color)
     TriggerClientEvent('vorp:LeftRank', source, title, subtitle, dict, icon, duration, color)
+end
+
+CoreFunctions.NotifyThreeSimpleTop = function(source, title, subtitle, secondary_subtitle, duration)
+    TriggerClientEvent('vorp:ThreeSimpleTop', source, title, subtitle, secondary_subtitle, duration)
+end
+
+CoreFunctions.NotifyOneSimpleTop = function(source, title, duration)
+    TriggerClientEvent('vorp:OneSimpleTop', source, title, duration)
 end
 
 CoreFunctions.dbUpdateAddTables = function(tbl)
@@ -234,5 +245,3 @@ end)
 CoreFunctions.addRpcCallback = function(name, callback)
     ServerRPC.Callback.Register(name, callback)
 end
-
-

@@ -14,6 +14,8 @@ RegisterNetEvent('vorp:deadplayerNotifY')
 RegisterNetEvent('vorp:updatemissioNotify')
 RegisterNetEvent('vorp:warningNotify')
 RegisterNetEvent('vorp:LeftRank')
+RegisterNetEvent('vorp:ThreeSimpleTop')
+RegisterNetEvent('vorp:OneSimpleTop')
 
 
 AddEventHandler('vorp:NotifyLeft', function(firsttext, secondtext, dict, icon, duration, color)
@@ -76,4 +78,12 @@ end)
 
 AddEventHandler('vorp:LeftRank', function(title, subtitle, dict, icon, duration, color)
     VorpNotification:NotifyLeftRank(tostring(title), tostring(subtitle), tostring(dict), tostring(icon), tonumber(duration), (tostring(color)))
+end)
+
+AddEventHandler('vorp:ThreeSimpleTop', function(title, subtitle, secondary_subtitle, duration)
+    VorpNotification:NotifyThreeSimpleTop(tostring(title), tostring(subtitle), tostring(secondary_subtitle), tonumber(duration))
+end)
+
+AddEventHandler('vorp:OneSimpleTop', function(title, duration)
+    VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
 end)
