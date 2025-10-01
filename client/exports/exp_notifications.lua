@@ -30,10 +30,6 @@ exports("ShowAdvancedRightNotification", function(_text, _dict, icon, text_color
     tonumber(duration), quality, showquality)
 end)
 
-exports("ShowBasicTopNotification", function(text, duration)
-  VorpNotification:NotifyBasicTop(tostring(text), tonumber(duration))
-end)
-
 exports("ShowSimpleCenterText", function(text, duration, text_color)
   VorpNotification:NotifyCenter(tostring(text), tonumber(duration), tostring(text_color))
 end)
@@ -70,4 +66,8 @@ end)
 
 exports("OneSimpleTop", function(title, duration)
   VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
+end)
+
+exports("LeftInteractive", function(title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+  VorpNotification:NotifyLeftInteractive(tostring(title), tostring(description), tostring(description_2), tostring(dict), tostring(texture), tostring(soundDict), tostring(soundName), tonumber(duration), tostring(color))
 end)

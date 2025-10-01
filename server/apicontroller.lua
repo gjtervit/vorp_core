@@ -15,11 +15,11 @@
 ---@field public NotifyFail fun(source:number, text:string, subtitle:string, duration:number)
 ---@field public NotifyDead fun(source:number, title:string, audioRef:string, audioName:string, duration:number)
 ---@field public NotifyUpdate fun(source:number, title:string, subtitle:string, duration:number)
----@field public NotifyBasicTop fun(source:number, title:string, duration:number)
 ---@field public NotifyWarning fun(source:number, title:string, msg:string, audioRef:string, audioName:string, duration:number)
 ---@field public NotifyLeftRank fun(source:number, title:string, subtitle:string, dict:string, icon:string, duration:number, color:string)
 ---@field public NotifyThreeSimpleTop fun(source:number, title:string, subtitle:string, secondary_subtitle:string, duration:number)
 ---@field public NotifyOneSimpleTop fun(source:number, title:string, duration:number)
+---@field public NotifyLeftInteractive fun(source:number, title:string, description:string, description_2:string, dict:string, texture:string, soundDict:string, soundName:string, duration:number, color:string)
 ---@field public dbUpdateAddTables fun(tbl:table)
 ---@field public dbUpdateAddUpdates fun(updt:table)
 ---@field public AddWebhook fun(title:string, webhook:string, description:string, color:string, name:string, logo:string?, footerlogo:string?, avatar:string?)
@@ -109,10 +109,6 @@ CoreFunctions.NotifyUpdate = function(source, title, subtitle, duration)
     TriggerClientEvent('vorp:updatemissioNotify', source, title, subtitle, duration)
 end
 
-CoreFunctions.NotifyBasicTop = function(source, title, duration)
-    TriggerClientEvent('vorp:ShowBasicTopNotification', source, title, duration)
-end
-
 CoreFunctions.NotifyWarning = function(source, title, msg, audioRef, audioName, duration)
     TriggerClientEvent('vorp:warningNotify', source, title, msg, audioRef, audioName, duration)
 end
@@ -127,6 +123,10 @@ end
 
 CoreFunctions.NotifyOneSimpleTop = function(source, title, duration)
     TriggerClientEvent('vorp:OneSimpleTop', source, title, duration)
+end
+
+CoreFunctions.NotifyLeftInteractive = function(source, title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+    TriggerClientEvent('vorp:LeftInteractive', source, title, description, description_2, dict, texture, soundDict, soundName, duration, color)
 end
 
 CoreFunctions.dbUpdateAddTables = function(tbl)

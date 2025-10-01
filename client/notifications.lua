@@ -6,7 +6,6 @@ RegisterNetEvent('vorp:TipRight')
 RegisterNetEvent('vorp:TipBottom')
 RegisterNetEvent('vorp:ShowTopNotification')
 RegisterNetEvent('vorp:ShowAdvancedRightNotification')
-RegisterNetEvent('vorp:ShowBasicTopNotification')
 RegisterNetEvent('vorp:ShowSimpleCenterText')
 RegisterNetEvent('vorp:ShowBottomRight')
 RegisterNetEvent('vorp:failmissioNotifY')
@@ -16,7 +15,7 @@ RegisterNetEvent('vorp:warningNotify')
 RegisterNetEvent('vorp:LeftRank')
 RegisterNetEvent('vorp:ThreeSimpleTop')
 RegisterNetEvent('vorp:OneSimpleTop')
-
+RegisterNetEvent('vorp:LeftInteractive')
 
 AddEventHandler('vorp:NotifyLeft', function(firsttext, secondtext, dict, icon, duration, color)
     VorpNotification:NotifyLeft(tostring(firsttext), tostring(secondtext), tostring(dict), tostring(icon), tonumber(duration), (tostring(color) or "COLOR_WHITE"))
@@ -45,10 +44,6 @@ end)
 AddEventHandler('vorp:ShowAdvancedRightNotification', function(text, dict, icon, text_color, duration, quality)
     VorpNotification:NotifyAvanced(tostring(text), tostring(dict), tostring(icon),
         tostring(text_color), tonumber(duration), quality)
-end)
-
-AddEventHandler('vorp:ShowBasicTopNotification', function(text, duration)
-    VorpNotification:NotifyBasicTop(tostring(text), tonumber(duration))
 end)
 
 AddEventHandler('vorp:ShowSimpleCenterText', function(text, duration)
@@ -86,4 +81,8 @@ end)
 
 AddEventHandler('vorp:OneSimpleTop', function(title, duration)
     VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
+end)
+
+AddEventHandler('vorp:LeftInteractive', function(title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+    VorpNotification:NotifyLeftInteractive(tostring(title), tostring(description), tostring(description_2), tostring(dict), tostring(texture), tostring(soundDict), tostring(soundName), tonumber(duration), tostring(color))
 end)

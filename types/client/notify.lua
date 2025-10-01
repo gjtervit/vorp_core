@@ -46,11 +46,6 @@ function exports.vorp_core:ShowTopNotification(title, subtext, duration) end
 function exports.vorp_core:ShowAdvancedRightNotification(_text, _dict, icon, text_color, duration, quality, showquality) end
 
 --- CLIENT SIDE NOTIFICATION
----@param title string text
----@param duration number duration
-function exports.vorp_core:ShowBasicTopNotification(title, duration) end
-
---- CLIENT SIDE NOTIFICATION
 ---@param text string text
 ---@param duration number duration
 ---@param text_color string text_color

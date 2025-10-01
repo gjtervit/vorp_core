@@ -9,7 +9,6 @@
 ---@field public NotifyObjective fun(message: string, duration?: number): nil
 ---@field public NotifySimpleTop fun(tittle: string, duration?: number): nil
 ---@field public NotifyAvanced fun(text: string, dict: string, icon: string, text_color: string, duration?: number, quality?: number, showquality?: boolean): nil
----@field public NotifyBasicTop fun(text: string, duration?: number): nil
 ---@field public NotifyCenter fun(text: string, duration?: number, text_color?: string): nil
 ---@field public NotifyBottomRight fun(text: string, duration?: number): nil
 ---@field public NotifyFail fun(title: string, subtitle: string, duration?: number): nil
@@ -100,7 +99,7 @@ end
 ---@param message string
 ---@param duration? number -- default 3000
 function VorpNotification:NotifyObjective(message, duration)
-  Citizen.InvokeNative("0xDD1232B332CBB9E7", 3, 1, 0)
+  Citizen.InvokeNative(0xDD1232B332CBB9E7, 3, 1, 0)
 
   local structConfig = DataView.ArrayBuffer(8 * 7)
   structConfig:SetInt32(8 * 0, tonumber(duration or 3000))
@@ -186,19 +185,6 @@ function VorpNotification:NotifyAvanced(text, dict, icon, text_color, duration, 
   Citizen.InvokeNative(0xB249EBCB30DD88E0, structConfig:Buffer(), structData:Buffer(), 1)
   -- SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED
   Citizen.InvokeNative(0x4ACA10A91F66F1E2, dict)
-end
-
----NotifyBasicTop
----@param text string
----@param duration? number -- default 3000
-function VorpNotification:NotifyBasicTop(text, duration)
-  local structConfig = DataView.ArrayBuffer(8 * 7)
-  structConfig:SetInt32(8 * 0, tonumber(duration or 3000))
-
-  local structData = DataView.ArrayBuffer(8 * 7)
-  structData:SetInt64(8 * 1, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", text)))
-
-  Citizen.InvokeNative(0x7AE0589093A2E088, structConfig:Buffer(), structData:Buffer(), 1)
 end
 
 ---NotifyCenter
@@ -330,6 +316,49 @@ function VorpNotification:NotifyLeftRank(title, subtitle, dict1, texture, durati
   Citizen.InvokeNative(0x4ACA10A91F66F1E2, dict1)
 end
 
+-- NotifyLeftInteractive
+---@param title string title of the notification
+---@param description string description of the notification
+---@param description_2 string description_2 of the notification
+---@param dict string dictionary of the texture
+---@param texture string texture (icon) of the notification
+---@param soundDict string description of the notification
+---@param soundName string sound name
+---@param duration number duration of the notification
+---@param color string color of the notification
+function VorpNotification:NotifyLeftInteractive(title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+  dict = dict and dict or "elements_stamps_icons"
+  CoreAction.Utils.LoadTexture(dict)
+
+  soundDict = soundDict and VarString(10, "LITERAL_STRING", soundDict) or 0
+  soundName = soundName and VarString(10, "LITERAL_STRING", soundName) or 0
+
+  local data = DataView.ArrayBuffer(8 * 7)
+  data:SetInt32(8 * 0, CoreAction.Utils.bigInt(duration or -2)) -- -2 or -1 to always show
+  -- sounds
+  data:SetInt64(8 * 1, CoreAction.Utils.bigInt(soundDict))
+  data:SetInt64(8 * 2, CoreAction.Utils.bigInt(soundName))
+
+  data:SetInt32(8 * 3, CoreAction.Utils.bigInt(0)) -- unknown INPUT_FEED_INTERACT_GENERIC
+  data:SetInt64(8 * 4, CoreAction.Utils.bigInt(0)) -- unknown joaat("player_menu")
+  data:SetInt64(8 * 5, CoreAction.Utils.bigInt(0)) -- unknown joaat("sp_notifications")
+  data:SetInt64(8 * 6, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", description_2)))
+
+  local info = DataView.ArrayBuffer(8 * 7)
+  info:SetInt32(8 * 0, CoreAction.Utils.bigInt(0)) -- unknown
+  info:SetInt64(8 * 1, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", title)))
+  info:SetInt64(8 * 2, CoreAction.Utils.bigInt(VarString(10, "LITERAL_STRING", description)))
+  info:SetInt32(8 * 3, CoreAction.Utils.bigInt(0)) -- unknown
+  info:SetInt64(8 * 4, CoreAction.Utils.bigInt(joaat(dict)))
+  info:SetInt64(8 * 5, CoreAction.Utils.bigInt(joaat(texture or "stamp_cash")))
+  info:SetInt32(8 * 6, CoreAction.Utils.bigInt(joaat(color or "COLOR_WHITE")))
+
+
+  Citizen.InvokeNative(0x18D6869FBFFEC0F8, data:Buffer(), info:Buffer(), true, true)
+  -- SET_STREAMED_TEXTURE_DICT_AS_NO_LONGER_NEEDED
+  Citizen.InvokeNative(0x4ACA10A91F66F1E2, dict)
+end
+
 ---Test function to test all notifications
 ---@return nil
 function VorpNotification:Test()
@@ -340,7 +369,8 @@ function VorpNotification:Test()
   local testIcon = "tick"
   local testColor = "COLOR_WHITE"
   local testLocation = "top_center"
-
+  local testSoundDict = "Transaction_Feed_Sounds"
+  local testSoundName = "Transaction_Positive"
   VorpNotification:NotifyLeft(testText, testText, testDict, testIcon, testDuration, testColor)
   print("^2Displaying: NotifyLeft")
   Wait(testWaitDuration)
@@ -362,9 +392,6 @@ function VorpNotification:Test()
   VorpNotification:NotifyAvanced(testText, testDict, testIcon, testColor, testDuration)
   print("^2Displaying: NotifyAvanced")
   Wait(testWaitDuration)
-  VorpNotification:NotifyBasicTop(testText, testDuration)
-  print("^2Displaying: NotifyBasicTop")
-  Wait(testWaitDuration)
   VorpNotification:NotifyCenter(testText, testDuration)
   print("^2Displaying: NotifyCenter")
   Wait(testWaitDuration)
@@ -385,5 +412,8 @@ function VorpNotification:Test()
   Wait(testWaitDuration)
   VorpNotification:NotifyLeftRank(testText, testText, testDict, testIcon, testDuration, testColor)
   print("^2Displaying: NotifyLeftRank")
+  Wait(testWaitDuration)
+  VorpNotification:NotifyLeftInteractive(testText, testText, testText, testDict, testIcon, testSoundDict, testSoundName, testDuration, testColor)
+  print("^2Displaying: NotifyLeftInteractive")
   Wait(testWaitDuration)
 end

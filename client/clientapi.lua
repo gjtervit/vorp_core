@@ -105,6 +105,10 @@ CoreFunctions.NotifyOneSimpleTop = function(title, duration)
     VorpNotification:NotifyOneSimpleTop(tostring(title), tonumber(duration))
 end
 
+CoreFunctions.NotifyLeftInteractive = function(title, description, description_2, dict, texture, soundDict, soundName, duration, color)
+    VorpNotification:NotifyLeftInteractive(tostring(title), tostring(description), tostring(description_2), tostring(dict), tostring(texture), tostring(soundDict), tostring(soundName), tonumber(duration), tostring(color))
+end
+
 CoreFunctions.Graphics = {
     ---@return {width:number, height:number}
     ScreenResolution = function()
