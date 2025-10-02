@@ -1,6 +1,5 @@
 local HealthData = {}
 local pvp = Config.PVP
-local multiplierHealth, multiplierStamina
 local T = Translation[Lang].MessageOfSystem
 local active = false
 -- FUNCTIONS
@@ -116,16 +115,10 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
 
         if not Config.HealthRecharge.enable then
             Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, 0.0) -- SetPlayerHealthRechargeMultiplier
-        else
-            Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, Config.HealthRecharge.multiplier)
-            multiplierHealth = Citizen.InvokeNative(0x22CD23BB0C45E0CD, PlayerId) -- GetPlayerHealthRechargeMultiplier
         end
 
         if not Config.StaminaRecharge.enable then
             Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, 0.0) -- SetPlayerStaminaRechargeMultiplier
-        else
-            Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, Config.StaminaRecharge.multiplier)
-            multiplierStamina = Citizen.InvokeNative(0x617D3494AD58200F, PlayerId) -- GetPlayerStaminaRechargeMultiplier
         end
 
         SetEntityCanBeDamaged(PlayerPedId(), true)
@@ -270,30 +263,30 @@ end)
 CreateThread(function()
     repeat Wait(5000) until LocalPlayer.state.IsInSession
 
-    while true do
+    while Config.HealthRecharge.enable or Config.StaminaRecharge.enable do
         local sleep = 1000
 
         if not IsPlayerDead(PlayerId()) then
             sleep = 500
             local PlayerId = PlayerId()
-            local multiplierH = Citizen.InvokeNative(0x22CD23BB0C45E0CD, PlayerId) -- GetPlayerHealthRechargeMultiplier
+            local PlayerPed = PlayerPedId()
 
-            if multiplierHealth and multiplierHealth ~= multiplierH then
-                Wait(500)
-                Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, Config.HealthRecharge.multiplier) -- SetPlayerHealthRechargeMultiplier
-            elseif not multiplierHealth and multiplierH then
-                Wait(500)
-                Citizen.InvokeNative(0x8899C244EBCF70DE, PlayerId, 0.0) -- SetPlayerHealthRechargeMultiplier
+            if Config.HealthRecharge.enable then
+                local NewRechargeMultiplier = GetAttributeCoreValue(PlayerPed, 0, Citizen.ResultAsInteger()) / 100 * Config.HealthRecharge.multiplier
+                local RechargeMultiplier = GetPlayerHealthRechargeMultiplier(PlayerId, Citizen.ResultAsFloat())
+                
+                if math.abs(NewRechargeMultiplier - RechargeMultiplier) > 0.01 then
+                    SetPlayerHealthRechargeMultiplier(PlayerId, NewRechargeMultiplier)
+                end
             end
 
-            local multiplierS = Citizen.InvokeNative(0x617D3494AD58200F, PlayerId) -- GetPlayerStaminaRechargeMultiplier
+            if Config.StaminaRecharge.enable then
+                local NewRechargeMultiplier = GetAttributeCoreValue(PlayerPed, 1, Citizen.ResultAsInteger()) / 100 * Config.StaminaRecharge.multiplier
+                local RechargeMultiplier = GetPlayerStaminaRechargeMultiplier(PlayerId, Citizen.ResultAsFloat())
 
-            if multiplierStamina and multiplierStamina ~= multiplierS then
-                Wait(500)
-                Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, Config.StaminaRecharge.multiplier) -- SetPlayerStaminaRechargeMultiplier
-            elseif not multiplierStamina and multiplierS then
-                Wait(500)
-                Citizen.InvokeNative(0xFECA17CF3343694B, PlayerId, 0.0) -- SetPlayerStaminaRechargeMultiplier
+                if math.abs(NewRechargeMultiplier - RechargeMultiplier) > 0.01 then
+                    SetPlayerStaminaRechargeMultiplier(PlayerId, NewRechargeMultiplier)
+                end
             end
         end
 
