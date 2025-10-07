@@ -1,4 +1,4 @@
-erDTranslation = {
+Translation = {
     English      = {
         Notify          = {
             testText = "This is a test notification",
