@@ -1,4 +1,4 @@
-Translation = {
+erDTranslation = {
     English      = {
         Notify          = {
             testText = "This is a test notification",
@@ -1551,7 +1551,7 @@ Translation = {
             whitelistid = "**Nombre Steam: **`%s`**\nIdentificador:** `%s`\n**Discord:** <@%s>\n**User-Id:** `%s`",
             whitelistid1 = "📋` Nuevo jugador se unió al servidor` ",
             deathLogTitle = "Registro de Muerte del Jugador",
-            playerDied = "Jugador Murió",
+            PlayerDied = "Jugador Murió",
             victimSteamName = "Nombre Steam Víctima: ",
             victimSteamId = "Steam ID Víctima: ",
             victimServerId = "ID del Servidor Víctima: ",
