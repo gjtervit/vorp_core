@@ -49,17 +49,20 @@ end
 AddEventHandler('playerSpawned', function()
     exports.spawnmanager:setAutoSpawn(false)
     DoScreenFadeOut(0)
-    Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost) --_DISPLAY_LOADING_SCREENS
+    if Config.UseInnitialLoadingScreen then
+        Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost) --_DISPLAY_LOADING_SCREENS
+    end
     DisplayRadar(false)
     SetMinimapHideFow(false)
     SetEntityCanBeDamaged(PlayerPedId(), false)
     TriggerServerEvent("vorp:playerSpawn")
 
     Wait(2000)
-    SetTimeout(7000, function()
-        ShutdownLoadingScreen()
-    end)
-
+    if Config.UseInnitialLoadingScreen then
+        SetTimeout(7000, function()
+            ShutdownLoadingScreen()
+        end)
+    end
     local isInSession = false
     CreateThread(function()
         while not isInSession do
@@ -98,7 +101,9 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
             SetEntityCanBeDamaged(PlayerPedId(), true)
             SetEntityHealth(PlayerPedId(), 0, 0)
             Citizen.InvokeNative(0xC6258F41D86676E0, PlayerPedId(), 0, -1)
-            ShutdownLoadingScreen()
+            if Config.Loadinscreen then
+                ShutdownLoadingScreen()
+            end
         end
     else
         local PlayerId = PlayerId()
@@ -186,7 +191,6 @@ end)
 CreateThread(function()
     repeat Wait(5000) until LocalPlayer.state.IsInSession
     while true do
-
         local pped = PlayerPedId()
         local sleep = 0
 
@@ -219,11 +223,11 @@ end)
 CreateThread(function()
     while true do
         Wait(0)
-        DisableControlAction(0, 0x580C4473, true) -- Disable hud
-        DisableControlAction(0, 0xCF8A4ECA, true) -- Disable hud
-        DisableControlAction(0, 0x9CC7A1A4, true) -- disable special ability when open hud
-        DisableControlAction(0, 0x1F6D95E5, true) -- diable f4 key that contains HUD
-        if IsUiappActiveByHash(`MAP`) == 1 then -- only when map is open incase someone needs to use the X key
+        DisableControlAction(0, 0x580C4473, true)              -- Disable hud
+        DisableControlAction(0, 0xCF8A4ECA, true)              -- Disable hud
+        DisableControlAction(0, 0x9CC7A1A4, true)              -- disable special ability when open hud
+        DisableControlAction(0, 0x1F6D95E5, true)              -- diable f4 key that contains HUD
+        if IsUiappActiveByHash(`MAP`) == 1 then                -- only when map is open incase someone needs to use the X key
             DisableControlAction(0, `INPUT_FRONTEND_RS`, true) -- disables the x button that freezes players when in the big map
         end
     end
@@ -274,7 +278,7 @@ CreateThread(function()
             if Config.HealthRecharge.enable then
                 local NewRechargeMultiplier = GetAttributeCoreValue(PlayerPed, 0, Citizen.ResultAsInteger()) / 100 * Config.HealthRecharge.multiplier
                 local RechargeMultiplier = GetPlayerHealthRechargeMultiplier(PlayerId, Citizen.ResultAsFloat())
-                
+
                 if math.abs(NewRechargeMultiplier - RechargeMultiplier) > 0.01 then
                     SetPlayerHealthRechargeMultiplier(PlayerId, NewRechargeMultiplier)
                 end
