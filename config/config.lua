@@ -149,10 +149,10 @@ Config = {
     --=============================================
     --            LOADING SCREEN CONFIGURATIONS    --
     --=============================================
-    -- this is not the loading screen you see with vorp core name, this is for after that one
-    UseInnitialLoadingScreen = true,  -- Enables the use of the initial game loading screen usually if you have a custom loading screen you could add this to false
 
-    Loadinscreen             = true,  -- Enables loading screens during spawn this is the second loading screen after player choose a character
+    UseInnitialLoadingScreen = true,  -- Enables the use of the initial game loading screen usually if you have a custom loading screen you could add this to false
+    -- USING THIS LOADING SCREEN WILL AFFECT HOW FAST THE PLAYER SPAWNS
+    Loadinscreen             = false, -- Enables loading screens during spawn this is the second loading screen after player choose a character
 
     LoadinScreenTimer        = 10000, -- Duration of loading screens in milliseconds.
 

@@ -25,10 +25,13 @@ function CoreAction.Utils.setPVP()
 end
 
 function CoreAction.Player.TeleportToCoords(coords, heading)
-    StartPlayerTeleport(PlayerId(), coords.x, coords.y, coords.z, heading, true, true, true, false)
-    repeat Wait(0) until not IsPlayerTeleportActive()
-    RequestCollisionAtCoord(coords.x, coords.y, coords.z)
-    repeat Wait(0) until HasCollisionLoadedAroundEntity(PlayerPedId())
+    CreateThread(function()
+        SetEntityCoordsAndHeading(PlayerPedId(), coords.x, coords.y, coords.z, heading or 0.0, false, false, false)
+        RequestCollisionAtCoord(coords.x, coords.y, coords.z)
+        repeat Wait(0) until HasCollisionLoadedAroundEntity(PlayerPedId()) == 1
+        repeat Wait(0) until not IsEntityWaitingForWorldCollision(PlayerPedId())
+        repeat Wait(0) until HasCollisionLoadedAroundPosition(coords.x, coords.y, coords.z)
+    end)
 end
 
 function CoreAction.Player.MapCheck()
@@ -76,9 +79,14 @@ AddEventHandler('playerSpawned', function()
     isInSession = true
 end)
 
+
 --EVENTS character Innitialize
 RegisterNetEvent('vorp:initCharacter')
 AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
+    if not IsScreenFadedOut() then
+        DoScreenFadeOut(0)
+    end
+
     CoreAction.Player.TeleportToCoords(coords, heading)
     if isdead then
         if not Config.CombatLogDeath then
@@ -114,7 +122,6 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
                 Citizen.InvokeNative(0x1E5B70E53DB661E5, 0, 0, 0, T.Hold, T.Load, T.Almost)
             end
             Wait(Config.LoadinScreenTimer)
-            Wait(1000)
             ShutdownLoadingScreen()
         end
 
@@ -129,8 +136,9 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
         SetEntityCanBeDamaged(PlayerPedId(), true)
 
         if Config.SavePlayersStatus then
+            HealthData = nil
             TriggerServerEvent("vorp:GetValues")
-            Wait(200)
+            repeat Wait(0) until HealthData
             if HealthData then
                 local player = PlayerPedId()
                 Citizen.InvokeNative(0xC6258F41D86676E0, player, 0, HealthData.hInner or 600)
@@ -144,12 +152,10 @@ AddEventHandler('vorp:initCharacter', function(coords, heading, isdead)
         end
     end
 
+    Wait(1000)
+    DoScreenFadeIn(3000)
+    repeat Wait(500) until IsScreenFadedIn()
     TriggerEvent("vorp_core:Client:OnPlayerSpawned")
-
-    SetTimeout(2000, function()
-        DoScreenFadeIn(4000)
-        repeat Wait(500) until IsScreenFadedIn()
-    end)
 end)
 
 
