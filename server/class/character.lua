@@ -683,24 +683,3 @@ function Character(data)
 
     return self
 end
-
--- example usage of multiJobs
-RegisterCommand('multiJobs', function(source, args, rawCommand)
-    local player = CoreFunctions.getUser(source)
-    if not player then return end
-
-    local character = player.getUsedCharacter
-    -- set
-    character.setMultiJob("jobname", grade, "label", flag)
-    -- remove
-    character.removeMultiJob("jobname")
-    -- get
-    local jobs = character.multiJobs
-    for job, data in pairs(jobs) do
-        print(job, data.grade, data.label)
-    end
-    
-    -- get a specific job
-    local value = character.multiJobs["jobname"]
-    print(value.grade, value.label)
-end, false)
