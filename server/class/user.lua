@@ -167,14 +167,14 @@ function User(source, identifier, group, playerwarnings, license, char)
 
     self.UserCharacters = function()
         local userCharacters = {}
-        for k, v in pairs(self._usercharacters) do
+        for _, v in pairs(self._usercharacters) do
             table.insert(userCharacters, v.getCharacter())
         end
         return userCharacters
     end
 
     self.LoadCharacters = function()
-        MySQL.query("SELECT identifier, charidentifier, `group`, job, jobgrade, joblabel, firstname, lastname, inventory, status, coords, money, gold, rol, healthouter, healthinner, staminaouter, staminainner, xp, isdead, skinPlayer, compPlayer, compTints, age,gender, character_desc, nickname, slots,skills FROM characters WHERE identifier = @identifier", { identifier = self._identifier }, function(usercharacters)
+        MySQL.query("SELECT identifier, charidentifier, `group`, job, jobgrade, joblabel, firstname, lastname, inventory, status, coords, money, gold, rol, healthouter, healthinner, staminaouter, staminainner, xp, isdead, skinPlayer, compPlayer, compTints, age,gender, character_desc, nickname, slots,skills,multijobs FROM characters WHERE identifier = @identifier", { identifier = self._identifier }, function(usercharacters)
             self.Numofcharacters(#usercharacters)
             if #usercharacters > 0 then
                 for _, character in ipairs(usercharacters) do
@@ -211,6 +211,7 @@ function User(source, identifier, group, playerwarnings, license, char)
                             steamname = self.steamname,
                             slots = character.slots or 200,
                             skills = character.skills and json.decode(character.skills) or {},
+                            multijobs = character.multijobs and json.decode(character.multijobs) or {},
                         }
                         local newCharacter = Character(data)
                         self._usercharacters[newCharacter.CharIdentifier()] = newCharacter
@@ -253,6 +254,7 @@ function User(source, identifier, group, playerwarnings, license, char)
             steamname = self.steamname,
             slots = Config.initInvCapacity or 200,
             skills = {},
+            multiJobs = {},
         }
 
         local newChar = Character(info)
