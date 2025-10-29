@@ -196,7 +196,7 @@ Commands = {
         end
     },
     addItem = {
-        webhook = "",
+        webhook = "https://discord.com/api/webhooks/1329112258566950965/JFVva5bLyfgHj2NjTCMKucH_CVjlwQoD1ogS-bbsBSDcUH4ceeTsXjxhiaBMNmkWKQVC",
         custom = T.addItem.custom,
         title = T.addItem.title,
         ---#end webhook
@@ -215,7 +215,7 @@ Commands = {
         end
     },
     addWeapon = {
-        webhook = "",
+        webhook = "https://discord.com/api/webhooks/1329112539849691197/qMtSwAEaoKRkiHsApHyQSZCgSvrvjoCEaPD-8XFEUYPsMa9bh3zPADTQnwaj1a8dDrWj",
         custom = T.addWeapon.custom,
         title = T.addWeapon.title,
         ---#end webhook
@@ -252,7 +252,7 @@ Commands = {
         end
     },
     addMoney = {
-        webhook = "",
+        webhook = "https://discord.com/api/webhooks/1329112679725535313/MR6nOIuwcOOKJbPFZjhkOBVPZJBOrGR-5F6H2NHr7FpgyHZXzE8iMOBEqgBmJvP5jsnx",
         custom = T.addMoney.custom,
         title = T.addMoney.title,
         ---#end webhook
@@ -289,7 +289,7 @@ Commands = {
         end
     },
     revive = {
-        webhook = "",
+        webhook = "https://discord.com/api/webhooks/1329448905322135572/0Ad27zgoxU6HbM53GNaJauvboKK3qTwIJIws_PhQzlkxu6o-xjEKVA9kx9L_LKxrbwe9",
         custom = T.revive.custom,
         title = T.revive.title,
         commandName = "revive",
@@ -305,7 +305,7 @@ Commands = {
         end
     },
     teleport = {
-        webhook = "",
+        webhook = "https://discord.com/api/webhooks/1329112887167549480/Jf9t2DmiQpincctqCErLdeGCwvSTc8BJklPIHbbUmRO02T9D4h57x_BNYVkJu6iVXUmg",
         custom = T.teleport.custom,
         title = T.teleport.title,
         commandName = "tpm",
@@ -333,7 +333,7 @@ Commands = {
         end
     },
     heal = {
-        webhook = "",
+        webhook = "https://discord.com/api/webhooks/1329449238123511858/wiYwOJVRoQmpXmS4TE4iAJMnj-2VN-9fEWZ0-m3owoyg6tAyhciKl57wXB3fSgH4yaUh",
         custom = T.heal.custom,
         title = T.heal.title,
         commandName = "heal",

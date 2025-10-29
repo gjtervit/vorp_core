@@ -16,9 +16,13 @@ Config = {
     DeleteFromUsersTable  = true, -- this will delete from users table if character does not exist "optimising the queries"
     -----------------------------------------------------
 
-    CanRespawn            = function() -- use this function to add your own logic if player can respawn or not
+    CanRespawn            = function()             -- use this function to add your own logic if player can respawn or not
         -- add your logic here
-        return true                    -- dont touch
+        if LocalPlayer.state.IsEscapingPrison then -- NEW LINE
+            return false
+        end
+
+        return true -- dont touch
     end,
     --=============================================
     --        STARTING CONFIGURATION             --
@@ -26,11 +30,11 @@ Config = {
 
     initGold              = 0.0,          -- Initial gold amount for new players.
 
-    initMoney             = 200.0,        -- Initial money amount for new players.
+    initMoney             = 300.0,        -- Initial money amount for new players.
 
     initRol               = 0.0,          -- Initial role-play currency amount for new players.
 
-    initInvCapacity       = 35.0,         -- Initial number of character inventory weight for new players. for old characters you must change in the database if you dont ave a new server
+    initInvCapacity       = 500.0,        -- Initial number of character inventory weight for new players. for old characters you must change in the database if you dont ave a new server
 
     initXp                = 0,            -- Initial experience points for new players.
 
@@ -69,21 +73,21 @@ Config = {
 
     SaveDiscordId         = true, -- Saves Discord ID in the character/user database upon joining/leaving.
 
-    MaxCharacters         = 5,    -- Maximum number of characters a player can create. when first join, for old users go to users table and change the number of characters there
+    MaxCharacters         = 2,    -- Maximum number of characters a player can create. when first join, for old users go to users table and change the number of characters there
 
-    MaxCharacterJobs      = 5,    -- Maximum number of jobs a player can have. for multijob system, this is for new players, for old change in database column max_jobs
+    MaxCharacterJobs      = 2,    -- Maximum number of jobs a player can have. for multijob system, this is for new players, for old change in database column max_jobs
 
-    SwitchJobCoolDown     = 10,   -- Cool down time in minutes for switching jobs.
+    SwitchJobCoolDown     = 1,    -- Cool down time in minutes for switching jobs.
 
     --=============================================
     --             UI CORE SETTINGS              --
     --=============================================
 
-    HideOnlyDEADEYE       = true,  -- Hides only the Dead Eye core in the UI.
+    HideOnlyDEADEYE       = true, -- Hides only the Dead Eye core in the UI.
 
-    HidePlayersCore       = false, -- Hides player cores in the UI.
+    HidePlayersCore       = true, -- Hides player cores in the UI.
 
-    HideHorseCores        = false, -- Hides horse cores in the UI.
+    HideHorseCores        = true, -- Hides horse cores in the UI.
 
     --=============================================
     --          WEBHOOK CONFIGURATIONS           --
@@ -108,17 +112,17 @@ Config = {
 
     HideUi                   = false,      -- Shows or hides the overall UI.
 
-    HideGold                 = false,      -- Disables the Gold UI for all players.
+    HideGold                 = true,       -- Disables the Gold UI for all players.
 
-    HideMoney                = false,      -- Disables the Money UI for all players.
+    HideMoney                = true,       -- Disables the Money UI for all players.
 
-    HideLevel                = false,      -- Disables the Level UI for all players.
+    HideLevel                = true,       -- Disables the Level UI for all players.
 
-    HideID                   = false,      -- Disables the ID UI for all players.
+    HideID                   = true,       -- Disables the ID UI for all players.
 
-    HideTokens               = false,      -- Disables the Token UI for all players.
+    HideTokens               = true,       -- Disables the Token UI for all players.
 
-    HidePVP                  = false,      -- Disables the PVP UI for all players.
+    HidePVP                  = true,       -- Disables the PVP UI for all players.
 
     UIPosition               = 'TopRight', -- Sets the UI position on the screen. Options are 'TopRight', 'TopLeft', 'BottomRight', 'BottomLeft', 'MiddleRight', 'TopMiddle', 'BottomMiddle'.
 
@@ -144,9 +148,9 @@ Config = {
     --            MAP CONFIGURATIONS             --
     --=============================================
 
-    mapTypeOnFoot            = 3,     -- Radar type when on foot. 0 = Off, 1 = Regular, 2 = Expanded, 3 = Simple (compass).
+    mapTypeOnFoot            = 1,     -- Radar type when on foot. 0 = Off, 1 = Regular, 2 = Expanded, 3 = Simple (compass).
 
-    mapTypeOnMount           = 3,     -- Radar type when on horse. Same options as on foot.
+    mapTypeOnMount           = 1,     -- Radar type when on horse. Same options as on foot.
 
     enableTypeRadar          = false, -- Enables custom radar types if true, otherwise players use game settings.
 
@@ -176,7 +180,7 @@ Config = {
 
     StaminaRecharge          = { enable = true, multiplier = 0.4 },  -- Auto-recharge for stamina, with a multiplier for speed.
 
-    RespawnTime              = 10,                                   -- Time in seconds before a player can respawn.
+    RespawnTime              = 600,                                  -- Time in seconds before a player can respawn.
 
     RespawnKey               = 0xDFF812F9,                           -- Key code for respawning (default is 'E').
 
@@ -189,7 +193,11 @@ Config = {
     UseDeathHandler          = true,                                 -- Keeps default death handling unless you have a custom system.
 
     Hospitals                = {                                     -- Spawn points for players respawning at hospitals.
-        Valentine = {
+        Strawberry = {
+            name = "Strawberry",
+            pos = vector4(-1761.0, -233.1, 183.2, 177.6), -- Vector4 coordinates: x, y, z, heading.
+        },
+        --[[        Valentine = {
             name = "Valentine",
             pos = vector4(-283.83, 806.4, 119.38, 321.76), -- Vector4 coordinates: x, y, z, heading.
         },
@@ -208,7 +216,7 @@ Config = {
         Rhodes = {
             name = "Rhodes",
             pos = vector4(1229.0, -1306.1, 76.9, 321.76),
-        },
+        },]]
     },
     ActiveEagleEye           = true,  -- Enables or disables Eagle Eye feature.
 
@@ -227,31 +235,31 @@ Config = {
     --===========================================
     --    DISCORD RICH PRESENCE INTEGRATION    --
     --===========================================
-    appid                    = nil,                        -- Discord Application ID. Replace this with your own application's ID.
+    appid                    = 1120430904981082184,            -- Discord Application ID. Replace this with your own application's ID.
 
-    biglogo                  = "LOGOname",                 -- Name of the image asset to use for the large icon in the rich presence.
+    biglogo                  = "remove_background_project_1_", -- Name of the image asset to use for the large icon in the rich presence.
 
-    biglogodesc              = " Redm Server Connect: ",   -- Description displayed when hovering over the large icon.
+    biglogodesc              = " Wild Frontier Roleplay 2.0 ", -- Description displayed when hovering over the large icon.
 
-    smalllogo                = "smallboy name",            -- Name of the image asset for the small icon in the rich presence. This is optional.
+    smalllogo                = "remove_background_project_1_", -- Name of the image asset for the small icon in the rich presence. This is optional.
 
-    smalllogodesc            = "Join us for a good time ", -- Description displayed when hovering over the small icon.
+    smalllogodesc            = " Wild Frontier Roleplay 2.0 ", -- Description displayed when hovering over the small icon.
 
-    richpresencebutton       = "Join Discord",             -- Text displayed on the rich presence button.
+    richpresencebutton       = "Join Discord",                 -- Text displayed on the rich presence button.
 
-    shownameandid            = true,                       -- Whether to display the player's Steam name and ID.
+    shownameandid            = true,                           -- Whether to display the player's Steam name and ID.
 
-    Buttons                  = {                           -- Configuration for buttons shown in the Discord rich presence.
+    Buttons                  = {                               -- Configuration for buttons shown in the Discord rich presence.
         {
-            text = 'Join Discord!',                        -- Text displayed on the first button.
+            text = 'Join Discord!',                            -- Text displayed on the first button.
             -- URL the first button directs to. Replace with your Discord invite link.
-            url = 'https://discord.gg/vorpcore'
+            url = 'https://discord.gg/wildfrontierrp'
 
         },
         {
-            text = 'Website', -- Text displayed on the second button.
+            text = 'Website',                          -- Text displayed on the second button.
             -- URL the second button directs to. Fill in with your website URL.
-            url = ''          -- Example for Rich Presence Button
+            url = 'https://wildfrontierroleplay.co.uk' -- Example for Rich Presence Button
         }
     },
     --=============================================
