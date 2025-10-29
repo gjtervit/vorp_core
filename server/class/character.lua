@@ -117,17 +117,12 @@ function Character(data)
         return self.job
     end
 
-    self.MultiJobs = function(job, grade, label, flag)
-        if flag or flag == nil then -- alow true or nil, only false will not trigger the event
-            TriggerEvent("vorp:playerMultiJobChange", self.source, job, grade)
-        end
+    self.MultiJobs = function(job, grade, label)
         self.multiJobs[job] = {
             grade = grade,
             label = label
         }
-        -- not sure if we should set a state bag because it can become too big
-        -- SetState(self.source, "Character", "MultiJobs", self.multiJobs)
-        return self.multiJobs[job]
+        return true
     end
 
     self.Joblabel = function(value)
@@ -418,16 +413,20 @@ function Character(data)
         self.Job(newjob)
     end
 
-    self.setMultiJob = function(job, grade, label, flag)
-        self.MultiJobs(job, grade, label, flag)
+    self.setMultiJob = function(job, grade, label)
+        return self.MultiJobs(job, grade, label)
     end
 
     self.removeMultiJob = function(job)
+        if not self.multiJobs[job] then
+            return false
+        end
+
         if self.multiJobs[job] then
             self.multiJobs[job] = nil
         end
-        --! add to docs
-        TriggerEvent("vorp:playerMultiJobRemoved", self.source, job)
+
+        return true
     end
 
     self.setGroup = function(newgroup)
@@ -567,6 +566,14 @@ function Character(data)
             self.Status(status)
         end
 
+        userData.getMultiJobsCount = function()
+            local count = 0
+            for _, _ in pairs(self.multiJobs) do
+                count = count + 1
+            end
+            return count
+        end
+
         userData.setJobGrade = function(jobgrade, flag)
             self.Jobgrade(jobgrade, flag)
         end
@@ -581,12 +588,12 @@ function Character(data)
             self.Job(job, flag)
         end
 
-        userData.setMultiJob = function(job, grade, label, flag)
-            self.MultiJobs(job, grade, label, flag)
+        userData.setMultiJob = function(job, grade, label)
+            return self.MultiJobs(job, grade, label)
         end
 
         userData.removeMultiJob = function(job)
-            self.RemoveMultiJob(job)
+            self.removeMultiJob(job)
         end
 
         userData.setMoney = function(money)

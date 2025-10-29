@@ -71,6 +71,10 @@ Config = {
 
     MaxCharacters         = 5,    -- Maximum number of characters a player can create. when first join, for old users go to users table and change the number of characters there
 
+    MaxCharacterJobs      = 5,    -- Maximum number of jobs a player can have. for multijob system, this is for new players, for old change in database column max_jobs
+
+    SwitchJobCoolDown     = 10,   -- Cool down time in minutes for switching jobs.
+
     --=============================================
     --             UI CORE SETTINGS              --
     --=============================================

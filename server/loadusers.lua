@@ -162,16 +162,16 @@ AddEventHandler("playerJoining", function()
     end
     _usersLoading[license] = _source
 
-    local user <const> = MySQL.single.await('SELECT `group`, `warnings`, `char` FROM users WHERE identifier = ?', { identifier })
+    local user <const> = MySQL.single.await('SELECT `group`, `warnings`, `char`, `max_jobs` FROM users WHERE identifier = ?', { identifier })
     if user then
-        _users[identifier] = User(_source, identifier, user.group, user.warnings, license, user.char)
+        _users[identifier] = User(_source, identifier, user.group, user.warnings, license, user.char, user.max_jobs)
         _users[identifier].LoadCharacters()
     else
         local count <const> = MySQL.scalar.await('SELECT COUNT(*) FROM users') or 0
         local defaultGroup <const> = count == 0 and "admin" or Config.initGroup
 
-        MySQL.insert("INSERT INTO users VALUES(?,?,?,?,?,?)", { identifier, defaultGroup, 0, 0, 0, Config.MaxCharacters })
-        _users[identifier] = User(_source, identifier, defaultGroup, 0, license, Config.MaxCharacters)
+        MySQL.insert("INSERT INTO users VALUES(?,?,?,?,?,?,?)", { identifier, defaultGroup, 0, 0, 0, Config.MaxCharacters, Config.MaxCharacterJobs })
+        _users[identifier] = User(_source, identifier, defaultGroup, 0, license, Config.MaxCharacters, Config.MaxCharacterJobs)
     end
 end)
 

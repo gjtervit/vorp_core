@@ -1,4 +1,4 @@
-local T<const> = Translation[Lang].MessageOfSystem
+local T <const> = Translation[Lang].MessageOfSystem
 
 local function checkUser(target)
     return CoreFunctions.getUser(tonumber(target))
@@ -406,6 +406,98 @@ function MyExp(data)
     local text = Translation[Lang].Notify.Level
     CoreFunctions.NotifyRightTip(_source, text:format(label, lvl, exp, data.args[1]), 4000)
 end
+
+-- command to set multi job max allowed
+function SetMultiJobMaxAllowed(data)
+    local _source <const> = data.source
+    local target <const> = tonumber(data.args[1])
+    local maxJobs <const> = tonumber(data.args[2])
+    local user <const> = CoreFunctions.getUser(target)
+    if not user then return end
+
+    user.setMaxJobsAllowed(maxJobs)
+
+    sendDiscordLogs(data.config.webhook, data, _source, maxJobs, "")
+    CoreFunctions.NotifyRightTip(_source, string.format("you have set the maximum number of jobs allowed to %s", maxJobs), 4000)
+    CoreFunctions.NotifyRightTip(target, string.format("you have been set the maximum number of jobs allowed to %s", maxJobs), 4000)
+end
+
+-- new funtion to add multijobs to users
+function AddMultiJob(data)
+    local _source <const> = data.source
+    local target <const> = tonumber(data.args[1])
+    local job <const> = tostring(data.args[2])
+    local grade <const> = tonumber(data.args[3])
+    local label <const> = tostring(data.args[4])
+    local user <const> = CoreFunctions.getUser(target)
+    if not user then return end
+
+    local maxJobs <const> = user.maxJobsAllowed
+    local character <const> = user.getUsedCharacter
+    local count <const> = character.getMultiJobsCount()
+    if count >= maxJobs then return CoreFunctions.NotifyRightTip(_source, "user have reached the maximum number of jobs allowed", 4000) end
+
+    character.setMultiJob(job, grade, label)
+    sendDiscordLogs(data.config.webhook, data, data.source, job, grade)
+    CoreFunctions.NotifyRightTip(data.source, string.format("you have added %s to %s", job, target), 4000)
+    CoreFunctions.NotifyRightTip(target, string.format("you have been given %s", job), 4000)
+end
+
+-- remove multijob from user
+function RemoveMultiJob(data)
+    local _source <const> = data.source
+    local target <const> = tonumber(data.args[1])
+    local job <const> = tostring(data.args[2])
+    local user <const> = CoreFunctions.getUser(target)
+    if not user then return end
+
+    local character <const> = user.getUsedCharacter
+    local result <const> = character.removeMultiJob(job)
+    if not result then return CoreFunctions.NotifyRightTip(_source, "user dont have this job to be removed", 4000) end
+
+    sendDiscordLogs(data.config.webhook, data, data.source, job, "")
+    CoreFunctions.NotifyRightTip(data.source, string.format("you have removed %s from %s", job, target), 4000)
+    CoreFunctions.NotifyRightTip(target, string.format("you have lost %s", job), 4000)
+end
+
+local usersJobCoolDown <const> = {}
+-- allows users t oswitch over jobs
+function SwitchMultiJob(data)
+    local _source <const> = data.source
+    local job <const> = tostring(data.args[2])
+    local Character = CoreFunctions.getUser(_source)?.getUsedCharacter
+    if not Character then return end
+
+    local value <const> = Character.multiJobs
+    if not value or not next(value) then
+        return CoreFunctions.NotifyRightTip(_source, "youdont have any mutijob", 4000)
+    end
+
+    if not value[job] then
+        return CoreFunctions.NotifyRightTip(_source, "you dont have this job", 4000)
+    end
+
+    if usersJobCoolDown[_source] and usersJobCoolDown[_source] > os.time() then
+        local timeDiff <const> = usersJobCoolDown[_source] - os.time()
+        local minutes <const> = math.floor(timeDiff / 60)
+        local seconds <const> = timeDiff % 60
+        return CoreFunctions.NotifyRightTip(_source, "you are on cool down, please wait " .. minutes .. " minutes and " .. seconds .. " seconds", 4000)
+    end
+    usersJobCoolDown[_source] = os.time() + Config.SwitchJobCoolDown * 60
+
+    -- this will fire the event player job update for scripts to listen to the changes
+    Character.setJob(job)
+    Character.setJobGrade(value[job].grade)
+    Character.setJobLabel(value[job].label)
+    CoreFunctions.NotifyRightTip(_source, "you have switched to " .. value[job].label .. " Job", 4000)
+end
+
+AddEventHandler("playerDropped", function(source)
+    local _source = source
+    if usersJobCoolDown[_source] then
+        usersJobCoolDown[_source] = nil
+    end
+end)
 
 --============================================ CHAT ADD SUGGESTION ========================================================--
 

@@ -212,8 +212,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**PlayerID** `%d`\n **Action:** `used charcreateadd`",
                 title = "📋` /addchar command` ",
-                label = "VORPcore command to set player can create more than one character default is: " ..
-                    Config.MaxCharacters,
+                label = "VORPcore command to set player can create more than one character default is: " .. Config.MaxCharacters,
                 name = "playerId",
                 name1 = "amount",
                 help = "server id player must be in game",
@@ -538,8 +537,7 @@ Translation = {
                 custom = "\n**ID do Jogador:** `%d`\n **Ação:** `utilizou charcreateadd`",
                 title = "📋` Comando /addchar`",
                 label =
-                    "Comando VORPcore para permitir que um jogador crie mais de um personagem (será permitido criar: " ..
-                    Config.MaxCharacters .. ")",
+                    "Comando VORPcore para permitir que um jogador crie mais de um personagem (será permitido criar: " .. Config.MaxCharacters .. ")",
                 name = "ID",
                 name1 = "quantidade",
                 help = "ID do jogador",
@@ -863,8 +861,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID do Jogador:** `%d`\n **Ação:** `habilitou a criação de mais personagens`",
                 title = "📋` Comando /addchar` ",
-                label = "Comando VORPcore para permitir que o jogador crie mais de um personagem (quantidade permitida: " ..
-                    Config.MaxCharacters .. ")",
+                label = "Comando VORPcore para permitir que o jogador crie mais de um personagem (quantidade permitida: " .. Config.MaxCharacters .. ")",
                 name = "ID",
                 name1 = "quantidade",
                 help = "ID do jogador",
@@ -1517,8 +1514,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID de jugador** `%d`\n **Acción:** `usó charcreateadd`",
                 title = "📋` Comando /addchar` ",
-                label = "Comando VORPcore para permitir que un jugador cree más de un personaje. Se permitirá crear: " ..
-                    Config.MaxCharacters,
+                label = "Comando VORPcore para permitir que un jugador cree más de un personaje. Se permitirá crear: " .. Config.MaxCharacters,
                 name = "ID",
                 name1 = "cantidad",
                 help = "ID del jugador",
@@ -1848,8 +1844,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID Joueur** `%d`\n **Action :** `utilisé charcreateadd`",
                 title = "📋` Commande /addchar`",
-                label = "Commande VORPcore pour autoriser un joueur à créer plusieurs personnages (maximum : " ..
-                    Config.MaxCharacters .. ")",
+                label = "Commande VORPcore pour autoriser un joueur à créer plusieurs personnages (maximum : " .. Config.MaxCharacters .. ")",
                 name = "ID",
                 name1 = "quantité",
                 help = "ID du joueur",
@@ -2178,8 +2173,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**PlayerID** `%d`\n **Aktion:** `charcreateadd verwendet`",
                 title = "📋` /addchar Befehl` ",
-                label = "VORPcore-Befehl, um festzulegen, ob ein Spieler mehr als einen Charakter erstellen darf: " ..
-                    Config.MaxCharacters,
+                label = "VORPcore-Befehl, um festzulegen, ob ein Spieler mehr als einen Charakter erstellen darf: " .. Config.MaxCharacters,
                 name = "ID",
                 name1 = "Menge",
                 help = "Spieler-ID",
@@ -2515,8 +2509,7 @@ Translation = {
             charCreateAdd = {
                 custom = "\n**ID jucator** `%d`\n **Actiune:** `a folosit comanda charcreateadd`",
                 title = "📋` Comanda /addchar` ",
-                label = "Comanda VORPcore pentru a permite unui jucator sa creeze mai multe caractere, implicit este: " ..
-                    Config.MaxCharacters,
+                label = "Comanda VORPcore pentru a permite unui jucator sa creeze mai multe caractere, implicit este: " .. Config.MaxCharacters,
                 name = "Id jucator",
                 name1 = "cantitate",
                 help = "id server jucatorul trebuie sa fie in joc",

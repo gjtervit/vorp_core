@@ -7,13 +7,14 @@ GlobalState.PlayersInSession = 0
 ---@param license string
 ---@param char number
 ---@return User
-function User(source, identifier, group, playerwarnings, license, char)
+function User(source, identifier, group, playerwarnings, license, char, max_jobs)
     local self = {}
     self._identifier = identifier
     self._license = license
     self._group = group
     self._playerwarnings = playerwarnings
     self._charperm = char
+    self._max_jobs = max_jobs
     self._usercharacters = {}
     self._numofcharacters = 0
     self.usedCharacterId = -1
@@ -106,6 +107,16 @@ function User(source, identifier, group, playerwarnings, license, char)
         return self._charperm
     end
 
+    --set max jobs
+    self.SetMaxJobs = function(value)
+        if value then
+            self._max_jobs = value
+            MySQL.update("UPDATE users SET `max_jobs` = ? WHERE `identifier` = ?", { self._max_jobs, self.Identifier() })
+        end
+        return self._max_jobs
+    end
+
+
     self.GetUser = function()
         local userData = {}
         userData.getCharperm = self.Charperm()
@@ -113,6 +124,7 @@ function User(source, identifier, group, playerwarnings, license, char)
         userData.getGroup = self.Group()
         userData.getUsedCharacter = self.UsedCharacter()
         userData.getUserCharacters = self.UserCharacters()
+        userData.maxJobsAllowed = tonumber(self._max_jobs)
 
         userData.getIdentifier = function()
             return self.Identifier()
@@ -122,16 +134,20 @@ function User(source, identifier, group, playerwarnings, license, char)
             return self.Playerwarnings()
         end
 
-        userData.setPlayerWarnings = function(warnings)
-            self.Playerwarnings(warnings)
+        userData.setPlayerWarnings = function(value)
+            self.Playerwarnings(value)
         end
 
-        userData.setGroup = function(group)
-            self.Group(group)
+        userData.setGroup = function(value)
+            self.Group(value)
         end
 
-        userData.setCharperm = function(char)
-            self.Charperm(char)
+        userData.setCharperm = function(value)
+            self.Charperm(value)
+        end
+
+        userData.setMaxJobsAllowed = function(value)
+            self.SetMaxJobs(value)
         end
 
         userData.getNumOfCharacters = function()
