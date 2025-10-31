@@ -589,11 +589,11 @@ function Character(data)
         end
 
         userData.setMultiJob = function(job, grade, label)
-            return self.MultiJobs(job, grade, label)
+            self.MultiJobs(job, grade, label)
         end
 
         userData.removeMultiJob = function(job)
-            self.removeMultiJob(job)
+            return self.removeMultiJob(job)
         end
 
         userData.setMoney = function(money)
