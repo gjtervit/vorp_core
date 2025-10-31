@@ -161,7 +161,7 @@ Commands = {
     },
     addMultiJob = {
         webhook = "",
-        custom = "\n**PlayerID:** `%d` \n**Job added** `%s`\n**Grade:** `%d`\n**Label:** `%s`",
+        custom = "\n**PlayerID:** `%d` \n**Job added** `%s`\n**Grade:** `%d`",
         title = "📋 `/addMultiJob command`",
         commandName = "addMultiJob",
         label = "VORPcore command to add a multi job to a user",
