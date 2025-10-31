@@ -426,9 +426,9 @@ end
 function AddMultiJob(data)
     local _source <const> = data.source
     local target <const> = tonumber(data.args[1])
-    local job <const> = tostring(data.args[2])
+    local job <const> = data.args[2]
     local grade <const> = tonumber(data.args[3])
-    local label <const> = tostring(data.args[4])
+    local label <const> = data.args[4]
     local user <const> = CoreFunctions.getUser(target)
     if not user then return end
 
@@ -438,8 +438,8 @@ function AddMultiJob(data)
     if count >= maxJobs then return CoreFunctions.NotifyRightTip(_source, "user have reached the maximum number of jobs allowed", 4000) end
 
     character.setMultiJob(job, grade, label)
-    sendDiscordLogs(data.config.webhook, data, data.source, job, grade)
-    CoreFunctions.NotifyRightTip(data.source, string.format("you have added %s to %s", job, target), 4000)
+    sendDiscordLogs(data.config.webhook, data, _source, job, grade)
+    CoreFunctions.NotifyRightTip(_source, string.format("you have added %s to %s", job, target), 4000)
     CoreFunctions.NotifyRightTip(target, string.format("you have been given %s", job), 4000)
 end
 
@@ -447,7 +447,7 @@ end
 function RemoveMultiJob(data)
     local _source <const> = data.source
     local target <const> = tonumber(data.args[1])
-    local job <const> = tostring(data.args[2])
+    local job <const> = data.args[2]
     local user <const> = CoreFunctions.getUser(target)
     if not user then return end
 
@@ -464,7 +464,7 @@ local usersJobCoolDown <const> = {}
 -- allows users t oswitch over jobs
 function SwitchMultiJob(data)
     local _source <const> = data.source
-    local job <const> = tostring(data.args[2])
+    local job <const> = data.args[2]
     local Character = CoreFunctions.getUser(_source)?.getUsedCharacter
     if not Character then return end
 
