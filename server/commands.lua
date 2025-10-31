@@ -490,6 +490,7 @@ function SwitchMultiJob(data)
     Character.setJobGrade(value[job].grade)
     Character.setJobLabel(value[job].label)
     CoreFunctions.NotifyRightTip(_source, "you have switched to " .. value[job].label .. " Job", 4000)
+    sendDiscordLogs(data.config.webhook, data, _source, value[job].label, value[job].grade)
 end
 
 AddEventHandler("playerDropped", function(source)
